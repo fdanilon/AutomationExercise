@@ -31,27 +31,27 @@ public class RegisterTest {
     @DisplayName("Test Case 1: Register User")
     public void testRegisterUser(){
         String textNewUser = new HomePage(driver)
-                .clickSignUpPage()
-                .capturaTextoSignUpPage();
+                .clicaNaPaginaDeRegistro()
+                .capturaTextoPaginaDeRegistro();
         assertTrue(textNewUser.contains("New User Signup!"));
 
         String textEnterAccount = new SignUpLoginPage(driver)
                 .preencheNovoUsuario("Danilo", "d3255@gmail.com")
-                .verificaPaginaDeRegistro();
+                .capturaTextoPreencherInformacoes();
         assertEquals("ENTER ACCOUNT INFORMATION", textEnterAccount);
 
         String textAccountCreated = new SignUpFillPage(driver)
-                .fillSignUp()
-                .verificaContaCriada();
+                .preencheRegistro()
+                .capturaTextoContaCriada();
         assertEquals("ACCOUNT CREATED!", textAccountCreated);
 
         String textAccountDeleted = new AccountCreatedPage(driver)
-                .clickContinueButton()
-                .clickDeletePage()
-                .verificaQueDeletouConta();
+                .clicaNoBotaoContinuarPaginaInicial()
+                .clicaNaPaginaDeExclusão()
+                .capturaTextoExcluiuConta();
         assertEquals("ACCOUNT DELETED!", textAccountDeleted);
 
-        new DeletePage(driver).clickContinueButtonDelete();
+        new DeletePage(driver).clicaNoBotaoContinuarPaginaInicial();
     }
 
     @Test

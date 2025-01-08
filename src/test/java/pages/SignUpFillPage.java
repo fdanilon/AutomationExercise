@@ -13,13 +13,13 @@ public class SignUpFillPage {
         this.driver = driver;
     }
 
-    public String verificaPaginaDeRegistro(){
+    public String capturaTextoPreencherInformacoes(){
         String textEnterAccount = driver.findElement(By.xpath("//b[contains(text(), 'Enter Account Information')]")).getText();
 
         return textEnterAccount;
     }
 
-    public AccountCreatedPage fillSignUp(){
+    public AccountCreatedPage preencheRegistro(){
         driver.findElement(By.id("id_gender1")).click();
 
         driver.findElement(By.cssSelector("[data-qa='password']")).sendKeys("12345");

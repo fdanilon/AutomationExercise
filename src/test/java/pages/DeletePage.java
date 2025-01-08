@@ -11,14 +11,14 @@ public class DeletePage {
         this.driver = driver;
     }
 
-    public String verificaQueDeletouConta(){
+    public String capturaTextoExcluiuConta(){
         String textAccountDeleted = driver.findElement(By.cssSelector("[data-qa=account-deleted]")).getText();
 
 
         return textAccountDeleted;
     }
 
-    public HomePage clickContinueButtonDelete(){
+    public HomePage clicaNoBotaoContinuarPaginaInicial(){
         driver.findElement(By.cssSelector("[data-qa=continue-button]")).click();
 
         return new HomePage(driver);

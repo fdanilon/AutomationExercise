@@ -12,7 +12,7 @@ public class SignUpLoginPage {
         this.driver = driver;
     }
 
-    public String capturaTextoSignUpPage(){
+    public String capturaTextoPaginaDeRegistro(){
         String textNewUser = driver.findElement(By.xpath("//h2[contains(text(),'New User Signup!')]")).getText();
 
         return textNewUser;

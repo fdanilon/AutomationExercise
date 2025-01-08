@@ -12,13 +12,13 @@ public class HomePage {
         this.driver = driver;
     }
 
-    public SignUpLoginPage clickSignUpPage(){
+    public SignUpLoginPage clicaNaPaginaDeRegistro(){
         driver.findElement(By.linkText("Signup / Login")).click();
 
         return new SignUpLoginPage(driver);
     }
 
-    public DeletePage clickDeletePage(){
+    public DeletePage clicaNaPaginaDeExclusão(){
         driver.findElement(By.linkText("Delete Account")).click();
 
         return new DeletePage(driver);

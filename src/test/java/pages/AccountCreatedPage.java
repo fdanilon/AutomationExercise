@@ -12,14 +12,14 @@ public class AccountCreatedPage {
         this.driver = driver;
     }
 
-    public String verificaContaCriada(){
+    public String capturaTextoContaCriada(){
         String textAccountCreated = driver.findElement(By.cssSelector("[data-qa=account-created]")).getText();
 
 
         return textAccountCreated;
     }
 
-    public HomePage clickContinueButton(){
+    public HomePage clicaNoBotaoContinuarPaginaInicial(){
         driver.findElement(By.cssSelector("[data-qa=continue-button]")).click();
 
         return new HomePage(driver);
