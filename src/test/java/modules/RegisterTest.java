@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Select;
 import pages.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +22,7 @@ public class RegisterTest {
 
     @AfterEach
     public void afterEach(){
-        //driver.quit();
+        driver.quit();
     }
 
     WebDriver driver;
@@ -36,7 +35,7 @@ public class RegisterTest {
         assertTrue(textNewUser.contains("New User Signup!"));
 
         String textEnterAccount = new SignUpLoginPage(driver)
-                .preencheNovoUsuario("Danilo", "d3255@gmail.com")
+                .preencheNovoUsuario("Danilo", "danilo3@gmail.com")
                 .capturaTextoPreencherInformacoes();
         assertEquals("ENTER ACCOUNT INFORMATION", textEnterAccount);
 
@@ -47,7 +46,7 @@ public class RegisterTest {
 
         String textAccountDeleted = new AccountCreatedPage(driver)
                 .clicaNoBotaoContinuarPaginaInicial()
-                .clicaNaPaginaDeExclusão()
+                .clicaNaPaginaDeExclusao()
                 .capturaTextoExcluiuConta();
         assertEquals("ACCOUNT DELETED!", textAccountDeleted);
 
@@ -57,57 +56,58 @@ public class RegisterTest {
     @Test
     @DisplayName("Test Case 2: Login User with correct email and password")
     public void testLoginUserWithCorrectEmailAndPassword(){
-        driver.findElement(By.linkText("Signup / Login")).click();
-        String textNewUser = driver.findElement(By.xpath("//h2[contains(text(),'Login to your account')]")).getText();
-        assertTrue(textNewUser.contains("Login to your account"));
 
-        driver.findElement(By.cssSelector("[data-qa=login-email]")).sendKeys("danilo3@gmail.com");
-        driver.findElement(By.cssSelector("[data-qa=login-password]")).sendKeys("12345");
+        String texLoginAccount = new HomePage(driver)
+                .clicaNaPaginaDeRegistro()
+                .capturaTextoLabelLogin();
+        assertTrue(texLoginAccount.contains("Login to your account"));
 
-        driver.findElement(By.cssSelector("[data-qa=login-button]")).click();
+        String textLoggedIn = new SignUpLoginPage(driver)
+                .preencheLogin("danilo3@gmail.com", "12345")
+                .capturaTextoLoggedIn();
 
-        String textLogin = driver.findElement(By.xpath("//a[contains(text(),'Logged in as')]")).getText();
-        assertEquals(textLogin, "Logged in as");
-//        driver.findElement(By.linkText("Delete Account")).click();
-//
-//        String accountDeleted = driver.findElement(By.cssSelector("[data-qa=account-deleted]")).getText();
-//        assertEquals("ACCOUNT DELETED!", accountDeleted);
+        assertTrue(textLoggedIn.contains("Logged in as"));
+
+        String textAccountDeleted = new HomePage(driver)
+                .clicaNaPaginaDeExclusao()
+                .capturaTextoExcluiuConta();
+        assertEquals("ACCOUNT DELETED!", textAccountDeleted);
+
+        new DeletePage(driver).clicaNoBotaoContinuarPaginaInicial();
     }
 
     @Test
     @DisplayName("Test Case 3: Login User with incorrect email and password")
     public void testLoginUserWithIncorrectEmailAndPassword(){
-        driver.findElement(By.linkText("Signup / Login")).click();
-        String textNewUser = driver.findElement(By.xpath("//h2[contains(text(),'Login to your account')]")).getText();
-        assertTrue(textNewUser.contains("Login to your account"));
+        String texLoginAccount = new HomePage(driver)
+                .clicaNaPaginaDeRegistro()
+                .capturaTextoLabelLogin();
+        assertTrue(texLoginAccount.contains("Login to your account"));
 
-        driver.findElement(By.cssSelector("[data-qa=login-email]")).sendKeys("danilo233@gmail.com");
-        driver.findElement(By.cssSelector("[data-qa=login-password]")).sendKeys("432413123");
+        String textWrongLogin = new SignUpLoginPage(driver)
+                .preencheLoginIncorreto("dani2233@gmail.com","432413123")
+                .capturaTextoLabelLoginIncorreto();
 
-        driver.findElement(By.cssSelector("[data-qa=login-button]")).click();
-
-        String textWrongLogin = driver.findElement(By.xpath("//p[contains(text(),'Your email or password is incorrect!')]")).getText();
         assertEquals(textWrongLogin,"Your email or password is incorrect!");
     }
 
     @Test
     @DisplayName("Test Case 4: Logout User")
     public void testLogoutUser(){
-        driver.findElement(By.linkText("Signup / Login")).click();
-        String textNewUser = driver.findElement(By.xpath("//h2[contains(text(),'Login to your account')]")).getText();
-        assertTrue(textNewUser.contains("Login to your account"));
+        String texLoginAccount = new HomePage(driver)
+                .clicaNaPaginaDeRegistro()
+                .capturaTextoLabelLogin();
+        assertTrue(texLoginAccount.contains("Login to your account"));
 
-        driver.findElement(By.cssSelector("[data-qa=login-email]")).sendKeys("danilo3@gmail.com");
-        driver.findElement(By.cssSelector("[data-qa=login-password]")).sendKeys("12345");
+        String textLoggedIn = new SignUpLoginPage(driver)
+                .preencheLogin("danilo3@gmail.com", "12345")
+                .capturaTextoLoggedIn();
 
-        driver.findElement(By.cssSelector("[data-qa=login-button]")).click();
+        assertTrue(textLoggedIn.contains("Logged in as"));
 
-        String textLogin = driver.findElement(By.xpath("//a[contains(text(),'Logged in as')]")).getText();
-        assertEquals(textLogin, "Logged in as Danilo");
-
-        driver.findElement(By.linkText("Logout")).click();
-
-        String textLoginAccount = driver.findElement(By.xpath("//h2[contains(text(),'Login to your account')]")).getText();
+        String textLoginAccount = new SignUpLoginPage(driver)
+                .clicaNoBotaoLogout()
+                .capturaTextoLabelLogin();
 
         assertTrue(textLoginAccount.contains("Login to your account"));
     }
@@ -117,15 +117,16 @@ public class RegisterTest {
     public void testRegisterUserWithExistingEmail(){
         driver.findElement(By.linkText("Signup / Login")).click();
 
-        String textNewUser = driver.findElement(By.xpath("//h2[contains(text(),'New User Signup!')]")).getText();
+        String textNewUser = new HomePage(driver)
+                .clicaNaPaginaDeRegistro()
+                .capturaTextoPaginaDeRegistro();
 
         assertTrue(textNewUser.contains("New User Signup!"));
 
-        driver.findElement(By.cssSelector("[data-qa='signup-name']")).sendKeys("Danilo");
-        driver.findElement(By.cssSelector("[data-qa='signup-email']")).sendKeys("danilo3@gmail.com");
-        driver.findElement(By.cssSelector("[data-qa='signup-button']")).click();
+        String textEmailAlreadyExists = new SignUpLoginPage(driver)
+                .preencheUsuarioExistente("Danilo", "danilo3@gmail.com")
+                .capturaTextoLabelEmailExistente();
 
-        String textEmailAlreadyExists = driver.findElement(By.xpath("//p[contains(text(),'Email Address already exist!')]")).getText();
         assertTrue(textEmailAlreadyExists.contains("Email Address already exist!"));
     }
 

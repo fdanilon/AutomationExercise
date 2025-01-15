@@ -3,10 +3,8 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class HomePage {
-    private WebDriver driver;
+    private final WebDriver driver;
 
     public HomePage(WebDriver driver){
         this.driver = driver;
@@ -18,9 +16,16 @@ public class HomePage {
         return new SignUpLoginPage(driver);
     }
 
-    public DeletePage clicaNaPaginaDeExclusão(){
+    public DeletePage clicaNaPaginaDeExclusao(){
         driver.findElement(By.linkText("Delete Account")).click();
 
         return new DeletePage(driver);
+    }
+
+
+
+    public String capturaTextoLoggedIn(){
+
+        return driver.findElement(By.xpath("//a[contains(text(),'Logged in as')]")).getText();
     }
 }
