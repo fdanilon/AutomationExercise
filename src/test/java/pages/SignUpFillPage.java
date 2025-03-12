@@ -7,16 +7,15 @@ import org.openqa.selenium.support.ui.Select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SignUpFillPage {
-    private WebDriver driver;
+    private final WebDriver driver;
 
     public SignUpFillPage(WebDriver driver){
         this.driver = driver;
     }
 
     public String capturaTextoPreencherInformacoes(){
-        String textEnterAccount = driver.findElement(By.xpath("//b[contains(text(), 'Enter Account Information')]")).getText();
 
-        return textEnterAccount;
+        return driver.findElement(By.xpath("//b[contains(text(), 'Enter Account Information')]")).getText();
     }
 
     public AccountCreatedPage preencheRegistro(){
